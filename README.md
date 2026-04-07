@@ -133,18 +133,6 @@ Provides personalized book recommendations, contextual responses based on login 
 
 ---
 
-## 3. Team Roles & Responsibilities
-
-| Name         | Role                   | Responsibilities                                             |
-| ------------ | ---------------------- | ------------------------------------------------------------ |
-| Hanchen Wang | Project Manager        | Oversees project timelines, coordinates communication, and ensures goals are met. |
-| Hao Chen     | Backend Developer      | Implements server-side logic, API development, and system integration. |
-| Huang Dayu   | Frontend Developer     | Designs and builds responsive user interfaces, integrates frontend with backend APIs. |
-| Jingwei Lin  | UI/UX Designer         | Creates intuitive user experiences, wireframes, and design prototypes. |
-| Yonghao Lyu  | Database Administrator | Designs database schema, manages data integrity, and optimizes queries. |
-
-
-
 ## Backend Libraries and Versions
 
 | Library                | Version  | Purpose                                  |
