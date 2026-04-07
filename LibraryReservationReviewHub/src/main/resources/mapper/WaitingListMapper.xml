@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.comp5619.libraryreservationreviewhub.mapper.WaitingListMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="WaitingListVOMap" type="com.comp5619.libraryreservationreviewhub.model.vo.WaitingListVO">
+        <id property="waitId" column="wait_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="bookId" column="book_id"/>
+        <result property="joinDate" column="join_date"/>
+        <result property="notificationDate" column="notification_date"/>
+        <result property="isNotified" column="is_notified"/>
+        <result property="status" column="status"/>
+        <result property="userName" column="user_name"/>
+        <result property="bookTitle" column="book_title"/>
+    </resultMap>
+
+    <!-- 示例 SQL：按用户查记录 -->
+    <select id="listByUser" resultMap="WaitingListVOMap">
+        SELECT wl.*,
+               CONCAT(u.first_name, ' ', u.last_name) AS user_name,
+               b.title AS book_title
+        FROM waiting_list wl
+                 LEFT JOIN Users u ON u.user_id = wl.user_id
+                 LEFT JOIN Book b ON b.book_id = wl.book_id
+        WHERE wl.user_id = #{userId}
+        ORDER BY wl.join_date DESC
+    </select>
+
+    <!-- 当前用户在其所有 WAITING 图书上的排队位置 + 总等待人数 + 图书库存/可用性 -->
+    <select id="selectNotifyEligibilityForUser" resultType="com.comp5619.libraryreservationreviewhub.model.vo.NotifyEligibilityVO">
+        SELECT
+        wl.wait_id as waitId,
+        wl.user_id as userId,
+        wl.book_id as bookId,
+        wl.join_date as joinDate,
+        b.title as bookTitle,
+        b.quantity,
+        b.held_quantity as heldQuantity,
+        b.available,
+        <!-- Calculate position in queue (only waiting users) -->
+        (SELECT COUNT(*) + 1
+        FROM waiting_list wl2
+        WHERE wl2.book_id = wl.book_id
+        AND wl2.status = 'WAITING'
+        AND wl2.join_date &lt; wl.join_date) as position,
+        <!-- Total waiting users for this book -->
+        (SELECT COUNT(*)
+        FROM waiting_list wl3
+        WHERE wl3.book_id = wl.book_id
+        AND wl3.status = 'WAITING') as totalWaiting,
+        <!-- Count of already notified users for this book -->
+        (SELECT COUNT(*)
+        FROM waiting_list wl4
+        WHERE wl4.book_id = wl.book_id
+        AND wl4.status = 'NOTIFIED') as notifiedCount
+        FROM waiting_list wl
+        JOIN book b ON wl.book_id = b.book_id
+        WHERE wl.user_id = #{userId}
+        AND wl.status = 'WAITING'
+        ORDER BY wl.join_date ASC
+    </select>
+
+<!--    <select id="selectNotifyEligibilityForUser" resultType="com.comp5619.libraryreservationreviewhub.model.vo.NotifyEligibilityVO">-->
+<!--        SELECT-->
+<!--            q.book_id           AS bookId,-->
+<!--            b.title             AS bookTitle,-->
+<!--            q.join_date         AS joinDate,-->
+<!--            q.pos               AS position,-->
+<!--      q.total_waiting     AS totalWaiting,-->
+<!--      b.quantity          AS quantity,-->
+<!--      b.held_quantity     AS heldQuantity,-->
+<!--      b.available         AS available-->
+<!--        FROM (-->
+<!--            SELECT-->
+<!--            wl.book_id,-->
+<!--            wl.user_id,-->
+<!--            wl.join_date,-->
+<!--            ROW_NUMBER() OVER (PARTITION BY wl.book_id ORDER BY wl.join_date ASC, wl.wait_id ASC) AS pos,-->
+<!--            COUNT(*)    OVER (PARTITION BY wl.book_id)                                         AS total_waiting-->
+<!--            FROM waiting_list wl-->
+<!--            WHERE wl.status = 'waiting'-->
+<!--            ) q-->
+<!--            JOIN Book b ON b.book_id = q.book_id-->
+<!--        WHERE q.user_id = #{userId}-->
+<!--        ORDER BY q.join_date ASC-->
+<!--    </select>-->
+
+
+    <!-- 2) 批量将该用户对这些书的 waiting 记录改为 notified -->
+    <update id="batchNotifyByBooks">
+        UPDATE waiting_list
+        SET status = 'notified',
+        is_notified = 1,
+        notification_date = NOW()
+        WHERE user_id = #{userId}
+        AND book_id IN
+        <foreach collection="bookIds" item="bookId" open="(" separator="," close=")">
+            #{bookId}
+        </foreach>
+        AND status = 'WAITING'
+    </update>
+
+    <!-- 将 join_date 超过 7 天且仍为 notified 的条目设为 cancelled -->
+    <update id="cancelStaleWaiting">
+        <![CDATA[
+        UPDATE Waiting_list
+        SET status = 'cancelled'
+        WHERE status = 'notified'
+          AND join_date < (CURRENT_TIMESTAMP - INTERVAL 7 DAY)
+        ]]>
+    </update>
+</mapper>

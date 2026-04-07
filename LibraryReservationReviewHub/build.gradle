@@ -1,0 +1,166 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.5.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id 'jacoco'
+}
+
+group = 'com.comp5619'
+version = '0.0.1-SNAPSHOT'
+description = 'LibraryReservationReviewHub'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+    // Spring Snapshots 仓库
+    maven {
+        name = "spring-snapshots"
+        url = uri("https://repo.spring.io/snapshot")
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
+
+    // Central Portal Snapshots 仓库
+    maven {
+        name = "central-portal-snapshots"
+        url = uri("https://central.sonatype.com/repository/maven-snapshots/")
+        mavenContent {
+            snapshotsOnly()
+        }
+    }
+}
+
+dependencyManagement {
+    imports {
+        // Alibaba AI BOM
+        mavenBom "com.alibaba.cloud.ai:spring-ai-alibaba-bom:1.0.0.2"
+        // Spring AI BOM
+        mavenBom "org.springframework.ai:spring-ai-bom:1.0.0"
+    }
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    // mysql
+    implementation 'com.mysql:mysql-connector-j'
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // --- Lombok（测试用）---
+    testCompileOnly 'org.projectlombok:lombok'
+    testAnnotationProcessor 'org.projectlombok:lombok'
+
+    // mybatis-plus
+    implementation 'com.baomidou:mybatis-plus-spring-boot3-starter:3.5.14'
+    // https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-jsqlparser
+    implementation("com.baomidou:mybatis-plus-jsqlparser:3.5.14")
+    // knife4j
+    implementation("com.github.xingfudeshi:knife4j-openapi3-jakarta-spring-boot-starter:4.6.0")
+    // Hutool 工具库 https://doc.hutool.cn/pages/index/
+    implementation 'cn.hutool:hutool-all:5.8.26'
+    
+    // H2数据库支持 (开发环境)
+    runtimeOnly 'com.h2database:h2'
+    
+    // JWT Token支持
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    
+    // 数据验证
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    
+    // 邮件发送 (等待列表通知)
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    
+    // 定时任务 (通知处理)
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'
+
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation("org.postgresql:postgresql:42.7.7")
+
+    // 添加 Alibaba AI Starter
+    implementation "com.alibaba.cloud.ai:spring-ai-alibaba-starter-dashscope"
+    // ====== Spring AI 依赖（升级正式版，由 BOM 管理） ======
+    implementation "org.springframework.ai:spring-ai-starter-model-ollama"
+    implementation "org.springframework.ai:spring-ai-markdown-document-reader"
+    implementation "org.springframework.ai:spring-ai-pgvector-store"
+    implementation "org.springframework.ai:spring-ai-starter-mcp-client"
+    implementation "org.springframework.ai:spring-ai-starter-mcp-server-webmvc"
+    // JSON schema生成依赖
+    implementation 'com.github.victools:jsonschema-generator:4.38.0'
+    // 支持文件会话记忆持久化的序列化
+    implementation 'com.esotericsoftware:kryo:5.6.2'
+    // 谷歌搜索引擎
+    implementation 'com.google.apis:google-api-services-customsearch:v1-rev20240821-2.0.0'
+    // jsoup HTML 解析库
+    implementation 'org.jsoup:jsoup:1.19.1'
+    // PDF 生成库
+    implementation 'com.itextpdf:itext-core:9.1.0'
+    // Asian fonts (仅测试使用)
+    testImplementation 'com.itextpdf:font-asian:9.1.0'
+
+    // test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'com.baomidou:mybatis-plus-spring-boot3-starter-test:3.5.14'
+    testImplementation 'com.h2database:h2'
+    testImplementation 'org.mockito:mockito-core:5.14.2'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.14.2'
+    testImplementation 'org.assertj:assertj-core:3.26.3'
+    testImplementation 'com.jayway.jsonpath:json-path:2.9.0'
+}
+
+/* --------------------------------------------------------------
+   JACOCO CONFIGURATION
+   -------------------------------------------------------------- */
+jacoco {
+    toolVersion = "0.8.12"               // latest stable
+}
+
+jacocoTestReport {
+    dependsOn test                       // run tests first
+
+    reports {
+        html.required = true             // open in browser
+        xml.required  = true             // for CI / SonarQube
+        csv.required  = false
+    }
+
+    // (Optional) exclude generated code / DTOs / config
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    '**/LibraryReservationReviewHubApplication*',
+                    '**/*Config*',
+                    '**/*Dto*',
+                    '**/*Vo*',
+                    '**/*Exception*',
+                    '**/common/**'
+
+            ])
+        }))
+    }
+}
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+    // 排除指定包或类，不运行
+    exclude '**/tools/**'
+    exclude '**/agent/**'
+    finalizedBy jacocoTestReport
+}

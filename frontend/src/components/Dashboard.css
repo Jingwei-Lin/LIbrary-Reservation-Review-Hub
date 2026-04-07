@@ -1,0 +1,713 @@
+.dashboard {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--background) 0%, var(--surface) 100%);
+    position: relative;
+}
+/* Notification red dot */
+.notification-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    margin-left: 8px;
+    box-shadow: 0 0 4px rgba(255, 0, 0, 0.5); /* Optional glow effect */
+}
+
+/* Shiny pulsating effect for notified waiting list button */
+.shiny {
+    position: relative;
+    animation: pulse 1.5s infinite ease-in-out;
+    border-radius: 4px;
+    padding: 4px 8px; /* Optional: Add padding for better appearance */
+    color: white; /* Ensure text is readable */
+    cursor: pointer;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 10px 5px rgba(67, 97, 238, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.7);
+    }
+}
+
+
+/* Enhanced Sidebar */
+.sidebar {
+    width: 300px;
+    padding: 1rem 1rem;
+    background-color: var(--surface); /* Remove gradient, use solid color */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    /* Remove backdrop-filter: blur(10px); */
+    z-index: 100;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+}
+
+.logo-icon {
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.logo-text {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Navigation and Category Boxes */
+.nav-box, .category-box {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.nav-box:hover, .category-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.nav-box h3, .category-box h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-box h3::before, .category-box h3::before {
+    content: '▶';
+    font-size: 0.8rem;
+    color: var(--primary);
+}
+
+.nav-box ul, .category-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-box li, .category-box li {
+    padding: 12px 16px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-box li::before, .category-box li::before {
+    content: '';
+    position: absolute;
+    left: -100%;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(67, 97, 238, 0.1), transparent);
+    transition: left 0.5s;
+}
+
+.nav-box li:hover::before, .category-box li:hover::before {
+    left: 100%;
+}
+
+.nav-box li:hover, .category-box li:hover {
+    color: var(--primary);
+    background: rgba(67, 97, 238, 0.1);
+    transform: translateX(8px);
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 280px;
+    flex: 1;
+    padding: 2rem;
+    min-height: 100vh;
+}
+
+.content-wrapper {
+    display: flex;
+    margin-top: 80px;
+    gap: 2rem;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.central-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.right-panel {
+    width: 300px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Welcome Section */
+.welcome {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.welcome h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.welcome p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Book Listing */
+.book-listing {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.book-listing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.book-listing-header h2 {
+    margin: 0;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.book-count {
+    color: var(--text-secondary);
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhanced Books Grid */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.book-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.book-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.book-card:hover::before {
+    transform: scaleX(1);
+}
+
+.book-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border-color: rgba(67, 97, 238, 0.3);
+}
+
+.book-cover {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    position: relative;
+}
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.book-card:hover .book-cover img {
+    transform: scale(1.05);
+}
+
+.book-cover-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: var(--text-secondary);
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%);
+}
+
+.book-info h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.books-author {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    font-weight: 500;
+}
+
+.books-genre {
+    color: var(--primary);
+    font-size: 1.2rem;
+    margin: 0 0 1rem 0;
+    font-weight: 500;
+    background: rgba(67, 97, 238, 0.1);
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.book-rating {
+    font-weight: bold;
+    color: #f39c12; /* Orange for stars */
+    margin: 10px 0;
+}
+
+/* Dark mode support */
+body.dark .book-rating {
+    color: #ffb74d;
+}
+
+.book-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.availability {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.availability.available {
+    background: rgba(76, 201, 240, 0.2);
+    color: var(--success);
+    border: 1px solid rgba(76, 201, 240, 0.3);
+}
+
+.availability.unavailable {
+    background: rgba(230, 57, 70, 0.2);
+    color: var(--error);
+    border: 1px solid rgba(230, 57, 70, 0.3);
+}
+
+.quantity {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Stats and Recommendation Boxes */
+.stats-box, .recommend-box {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.stats-box:hover, .recommend-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.stats-box h3, .recommend-box h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.stats-box p {
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.stats-box p span {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.recommend-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recommend-box li {
+    padding: 12px 16px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.recommend-box li:hover {
+    color: var(--primary);
+    background: rgba(67, 97, 238, 0.1);
+    transform: translateX(8px);
+}
+
+/* Enhanced Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.pagination button {
+    width: auto;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 44px;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
+}
+
+.pagination button:disabled {
+    background: rgba(255, 255, 255, 0.02);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.pagination button.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+/* Pagination number buttons */
+.pagination-number {
+    width: auto;
+    padding: 10px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 44px;
+}
+
+.pagination-number:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
+}
+
+.pagination-number.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    font-weight: 600;
+}
+
+.pagination-ellipsis {
+    padding: 8px 12px;
+    color: var(--text-secondary);
+}
+
+/* Loading and Error States */
+.loading, .error, .no-books {
+    text-align: center;
+    padding: 3rem;
+    border-radius: 16px;
+    margin: 2rem 0;
+}
+
+.loading {
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(114, 9, 183, 0.1) 100%);
+    color: var(--primary);
+    border: 1px solid rgba(67, 97, 238, 0.2);
+}
+
+.error {
+    background: linear-gradient(135deg, rgba(230, 57, 70, 0.1) 0%, rgba(229, 9, 127, 0.1) 100%);
+    color: var(--error);
+    border: 1px solid rgba(230, 57, 70, 0.2);
+}
+
+.no-books {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.retry-btn {
+    margin-top: 1rem;
+    width: auto;
+    padding: 8px 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.retry-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Dark Mode Overrides */
+.dashboard.dark-mode {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+}
+
+.dashboard.dark-mode .sidebar {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+}
+
+.dashboard.dark-mode .book-card,
+.dashboard.dark-mode .stats-box,
+.dashboard.dark-mode .recommend-box,
+.dashboard.dark-mode .book-listing,
+.dashboard.dark-mode .availability,
+.dashboard.dark-mode .quantity,
+.dashboard.dark-mode .pagina{
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* Dark mode specific pagination styles */
+.dashboard.dark-mode .pagination-number {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dashboard.dark-mode .pagination-number:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.dashboard.dark-mode .pagination-number.active {
+    background: var(--primary);
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+
+    .right-panel {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .stats-box, .recommend-box {
+        flex: 1;
+        margin: 0 0.5rem;
+    }
+}
+
+@media (max-width: 968px) {
+    .sidebar {
+        width: 240px;
+        padding: 1.5rem 1rem;
+    }
+
+    .main-content {
+        margin-left: 240px;
+        padding: 1.5rem;
+    }
+
+    .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));/* Smaller minmax */
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .nav-box, .category-box {
+        flex: 1;
+        min-width: 200px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .content-wrapper {
+        margin-top: 1rem;
+    }
+
+    .books-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+    }
+
+    .right-panel {
+        flex-direction: column;
+    }
+}
+
+/* Animation keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.book-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.book-card:nth-child(odd) {
+    animation-delay: 0.1s;
+}
+
+.book-card:nth-child(even) {
+    animation-delay: 0.2s;
+}

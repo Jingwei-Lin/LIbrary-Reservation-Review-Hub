@@ -1,0 +1,235 @@
+.reservation-form-container {
+    max-width: 600px;
+    margin: 100px auto 40px;
+    padding: 2.5rem;
+    background: var(--surface);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.reservation-form-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+}
+
+.reservation-form-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.2rem;
+    color: var(--text-primary);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.back-button {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.back-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.back-button:hover::before {
+    left: 100%;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--success);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+.form-group input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+/*button[type="submit"] {*/
+/*    width: 100%;*/
+/*    padding: 14px;*/
+/*    background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);*/
+/*    color: white;*/
+/*    border: none;*/
+/*    border-radius: 12px;*/
+/*    cursor: pointer;*/
+/*    font-weight: 600;*/
+/*    font-size: 1rem;*/
+/*    transition: all 0.3s ease;*/
+/*    position: relative;*/
+/*    overflow: hidden;*/
+/*    margin-top: 1rem;*/
+/*}*/
+
+button[type="submit"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+button[type="submit"]:hover::before {
+    left: 100%;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+button[type="submit"]:disabled {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+button[type="submit"]:disabled:hover::before {
+    left: -100%;
+}
+
+.error {
+    color: var(--error);
+    background: rgba(230, 57, 70, 0.1);
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 4px solid var(--error);
+    margin: 1rem 0;
+    font-weight: 500;
+}
+
+.success {
+    color: var(--success);
+    background: rgba(76, 201, 240, 0.1);
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 4px solid var(--success);
+    margin: 1rem 0;
+    font-weight: 500;
+}
+
+/* Dark mode specific styles */
+.reservation-form-container.dark-mode {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.reservation-form-container.dark-mode .form-group input {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.reservation-form-container.dark-mode .form-group input:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--success);
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reservation-form-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .reservation-form-container {
+        margin: 80px 20px 20px;
+        padding: 2rem;
+    }
+
+    .reservation-form-container h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .reservation-form-container {
+        margin: 70px 15px 15px;
+        padding: 1.5rem;
+    }
+
+    .reservation-form-container h2 {
+        font-size: 1.6rem;
+    }
+
+    .form-group input {
+        padding: 10px 14px;
+    }
+
+    button[type="submit"] {
+        padding: 12px;
+    }
+}

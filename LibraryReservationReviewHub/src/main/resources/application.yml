@@ -1,0 +1,76 @@
+server:
+  port: 8432
+  servlet:
+    context-path: /api
+
+
+spring:
+  application:
+    name: LibraryReservationReviewHub
+
+
+  ai:
+    dashscope:
+      api-key: sk-7460f782ac83459da6b4c7eb4fe28cdd
+      base-url: https://dashscope.aliyuncs.com/compatible-mode
+      chat:
+        options:
+          model: qwen-max
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/library_reservation
+    username: root
+    password: ch1028390030
+
+#    datasource:
+#      url: jdbc:postgresql://localhost:5433/library_reservation
+#      username: postgres
+#      password: 123456
+#      driver-class-name: org.postgresql.Driver
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'default'
+      paths-to-match: '/**'
+      packages-to-scan: com.comp5619.libraryreservationreviewhub.controller
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: en
+
+mybatis-plus:
+  configuration:
+    # MyBatis configuration
+    map-underscore-to-camel-case: true
+    # print log info
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+logging:
+  level:
+    org.springframework.web: DEBUG
+    org.springframework.web.servlet.resource: DEBUG
+    com.comp5619.libraryreservationreviewhub.app: DEBUG
+
+
+

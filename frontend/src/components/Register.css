@@ -1,0 +1,225 @@
+.register-container {
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 2.5rem;
+    background: var(--surface);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.register-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+}
+
+.register-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+.register-container h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 2.2rem;
+    font-weight: 700;
+}
+
+.register-container form div {
+    margin-bottom: 1.2rem;
+    text-align: left;
+}
+
+.register-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.register-container input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color, #e2e8f0);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.register-container input:focus {
+    outline: none;
+    border-color: var(--success);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+.register-container input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.register-container .error {
+    color: var(--error);
+    background: rgba(230, 57, 70, 0.1);
+    padding: 12px 16px;
+    border-radius: 8px;
+    border-left: 4px solid var(--error);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.register-container button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--success) 0%, #20c997 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.register-container button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.register-container button:hover::before {
+    left: 100%;
+}
+
+.register-container button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+}
+
+.register-container button:disabled {
+    background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.register-container button:disabled:hover::before {
+    left: -100%;
+}
+
+.register-container p {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.register-container a {
+    color: var(--success);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.register-container a:hover {
+    color: #20c997;
+}
+
+/* Form grid layout for better organization */
+.register-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Dark mode specific styles */
+.page-container.dark-mode .register-container {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.page-container.dark-mode .register-container input {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.page-container.dark-mode .register-container input:focus {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--success);
+}
+
+/* Animation */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.register-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .register-container {
+        margin: 40px 20px;
+        padding: 2rem;
+    }
+
+    .register-container h2 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .register-container {
+        margin: 20px 15px;
+        padding: 1.5rem;
+    }
+
+    .register-container h2 {
+        font-size: 1.6rem;
+    }
+
+    .register-container input {
+        padding: 10px 14px;
+    }
+
+    .register-container button {
+        padding: 12px;
+    }
+
+    .register-container form div {
+        margin-bottom: 1rem;
+    }
+}
